@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>داشبورد دفتر معدن - MineToken Claims</title>
+
+<style>
+body {
+    margin: 0;
+    background: #000;
+    overflow: hidden;
+    font-family: "Courier New", monospace;
+    color: #00ff00;
+}
+
+#digitalRain {
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    z-index: 0;
+}
+
+.dashboard {
+    position: relative;
+    z-index: 1;
+    width: 90%;
+    margin: auto;
+    margin-top: 30px;
+    background: rgba(0,0,0,0.7);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #0f0;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #00ff00;
+}
+
+/* table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #00ff00;
+    text-align: center;
+}
+
+.status-pending {
+    color: yellow;
+}
+.status-approved {
+    color: cyan;
+}
+.status-delivered {
+    color: #00ff00;
+}
+
+/* Buttons */
+button {
+    padding: 8px 15px;
+    border: none;
+    background: #00ff00;
+    font-family: "Courier New";
+    cursor: pointer;
+    color: #000;
+    border-radius: 5px;
+}
+button:hover { background: #00cc00; }
+
+.filters {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+input {
+    padding: 8px;
+    width: 200px;
+    border-radius: 5px;
+    border: none;
+}
+
+.export-btn {
+    background: magenta;
+    color: white;
+}
+.export-btn:hover { background: #cc00cc; }
+
+</style>
+
+</head>
+<body>
+
+<canvas id="digitalRain"></canvas>
+
+<div class="dashboard">
+    <h1>داشبورد دفتر معدن — مدیریت درخواست‌های زغال</h1>
+
+    <div class="filters">
+        <input id="walletFilter" placeholder="فیلتر بر اساس آدرس کیف پول">
+        <input id="minAmount" placeholder="حداقل مقدار توکن سوزانده‌شده">
+        <input id="maxAmount" placeholder="حداکثر مقدار توکن سوزانده‌شده">
+        <button id="applyFilters">اعمال فیلتر</button>
+        <button class="export-btn" id="exportClaims">خروجی CSV</button>
+    </div>
+
+    <table id="claimsTable">
+        <thead>
+            <tr>
+                <th>شناسه</th>
+                <th>آدرس کاربر</th>
+                <th>مقدار سوزانده‌شده (MINE)</th>
+                <th>وضعیت</th>
+                <th>زمان</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody id="claimsBody">
+            <!-- dynamic -->
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+/* DIGITAL RAIN — SAME STYLE AS MAIN APP */
+const canvas = document.getElementById("digitalRain");
+const ctx = canvas.getContext("2d");
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resize();
+window.onresize = resize;
+
+const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const fontSize = 16;
+let cols = canvas.width / fontSize;
+let drops = Array(Math.floor(cols)).fill(1);
+
+function draw() {
+    ctx.fillStyle = "rgba(0,0,0,0.05)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "#0F0";
+    ctx.font = fontSize + "px Courier";
+    drops.forEach((y,i)=>{
+        const char = chars[Math.floor(Math.random()*chars.length)];
+        ctx.fillText(char, i*fontSize, y*fontSize);
+        if (y*fontSize > canvas.height && Math.random()>0.975) drops[i]=0;
+        drops[i]++;
+    });
+}
+setInterval(draw, 40);
+
+/* ----------------- MOCK CLAIM DATA (Replace with on-chain fetch) ---------------- */
+let claims = [
+    {id:1, wallet:"0x91a...13F", amount:50, status:"pending", time:"2026-04-09 14:12"},
+    {id:2, wallet:"0x48c...792", amount:100, status:"approved", time:"2026-04-09 13:00"},
+    {id:3, wallet:"0xA1e...BB9", amount:200, status:"delivered", time:"2026-04-08 19:30"},
+];
+
+/* ----------------- RENDER TABLE ---------------- */
+function renderClaims(list) {
+    const body = document.getElementById("claimsBody");
+    body.innerHTML = "";
+
+    list.forEach(claim => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>${claim.id}</td>
+            <td>${claim.wallet}</td>
+            <td>${claim.amount}</td>
+            <td class="status-${claim.status}">${claim.status}</td>
+            <td>${claim.time}</td>
+            <td>
+                <button onclick="updateStatus(${claim.id}, 'approved')">تأیید</button>
+                <button onclick="updateStatus(${claim.id}, 'delivered')">تحویل شد</button>
+            </td>
+        `;
+
+        body.appendChild(tr);
+    });
+}
+
+renderClaims(claims);
+
+/* ----------------- UPDATE STATUS ---------------- */
+function updateStatus(id, newStatus) {
+    const claim = claims.find(c=>c.id===id);
+    claim.status = newStatus;
+    renderClaims(claims);
+}
+
+/* ----------------- FILTERS ---------------- */
+document.getElementById("applyFilters").onclick = () => {
+    const w = document.getElementById("walletFilter").value.trim();
+    const min = Number(document.getElementById("minAmount").value);
+    const max = Number(document.getElementById("maxAmount").value);
+
+    const filtered = claims.filter(c=>{
+        return (!w || c.wallet.includes(w))
+            && (!min || c.amount >= min)
+            && (!max || c.amount <= max);
+    });
+
+    renderClaims(filtered);
+};
+
+/* ----------------- CSV EXPORT ---------------- */
+document.getElementById("exportClaims").onclick = () => {
+    let csv = "id,wallet,amount,status,time\n";
+    claims.forEach(c=>{
+        csv += `${c.id},${c.wallet},${c.amount},${c.status},${c.time}\n`;
+    });
+
+    const blob = new Blob([csv], {type:"text/csv"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "mine_claims.csv";
+    a.click();
+};
+
+</script>
+</body>
+</html>
