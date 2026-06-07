@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ذغال‌سنگ کوین ⛏️</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Digital Rain Background -->
+  <div class="rain-overlay"></div>
+
+  <!-- Main Container -->
+  <div class="container">
+
+    <!-- Header -->
+    <header class="mc-header">
+      <div class="mc-logo">⛏️</div>
+      <h1 class="mc-title">ذغال‌سنگ کوین</h1>
+      <p class="mc-subtitle">COAL COIN · ERC-20</p>
+    </header>
+
+    <!-- Wallet Section -->
+    <div class="mc-panel" id="wallet-panel">
+      <button class="mc-btn btn-connect" id="btn-connect">
+        🦊 اتصال MetaMask
+      </button>
+      <div class="wallet-info hidden" id="wallet-info">
+        <span class="label">آدرس:</span>
+        <span class="value mono" id="wallet-address">—</span>
+      </div>
+    </div>
+
+    <!-- Balance Section -->
+    <div class="mc-panel" id="balance-panel">
+      <h2 class="panel-title">💰 موجودی</h2>
+      <div class="balance-display">
+        <span id="token-balance">0</span>
+        <span class="token-symbol">COAL</span>
+      </div>
+      <div class="balance-eth">
+        <span class="label">ETH:</span>
+        <span id="eth-balance">0</span>
+      </div>
+      <button class="mc-btn btn-refresh" id="btn-refresh">🔄 بروزرسانی</button>
+    </div>
+
+    <!-- Mint Section -->
+    <div class="mc-panel" id="mint-panel">
+      <h2 class="panel-title">⛏️ مینت توکن</h2>
+
+      <!-- Whitelist Mint -->
+      <div class="mint-box">
+        <h3>🔑 مینت لیست سفید</h3>
+        <input
+          class="mc-input"
+          type="number"
+          id="wl-amount"
+          placeholder="تعداد توکن"
+          min="1"
+        />
+        <input
+          class="mc-input"
+          type="text"
+          id="wl-proof"
+          placeholder="Merkle Proof (آرایه JSON)"
+        />
+        <button class="mc-btn btn-mint" id="btn-wl-mint">
+          مینت با Whitelist
+        </button>
+      </div>
+
+      <!-- Public Mint -->
+      <div class="mint-box">
+        <h3>🌐 مینت عمومی</h3>
+        <input
+          class="mc-input"
+          type="number"
+          id="pub-amount"
+          placeholder="تعداد توکن"
+          min="1"
+        />
+        <button class="mc-btn btn-mint" id="btn-pub-mint">
+          مینت عمومی
+        </button>
+      </div>
+    </div>
+
+    <!-- Burn Section -->
+    <div class="mc-panel" id="burn-panel">
+      <h2 class="panel-title">🔥 سوزاندن توکن</h2>
+      <input
+        class="mc-input"
+        type="number"
+        id="burn-amount"
+        placeholder="مقدار برای سوزاندن"
+        min="1"
+      />
+      <button class="mc-btn btn-burn" id="btn-burn">
+        🔥 بسوزان
+      </button>
+    </div>
+
+    <!-- Transfer Section -->
+    <div class="mc-panel" id="transfer-panel">
+      <h2 class="panel-title">📤 انتقال توکن</h2>
+      <input
+        class="mc-input"
+        type="text"
+        id="transfer-to"
+        placeholder="آدرس گیرنده (0x...)"
+      />
+      <input
+        class="mc-input"
+        type="number"
+        id="transfer-amount"
+        placeholder="مقدار"
+        min="1"
+      />
+      <button class="mc-btn btn-transfer" id="btn-transfer">
+        📤 ارسال
+      </button>
+    </div>
+
+    <!-- Contract Info -->
+    <div class="mc-panel" id="info-panel">
+      <h2 class="panel-title">📋 اطلاعات قرارداد</h2>
+      <div class="info-grid">
+        <div class="info-row">
+          <span class="label">عرضه کل:</span>
+          <span id="total-supply">—</span>
+        </div>
+        <div class="info-row">
+          <span class="label">حداکثر عرضه:</span>
+          <span id="max-supply">—</span>
+        </div>
+        <div class="info-row">
+          <span class="label">قیمت Mint:</span>
+          <span id="mint-price">—</span>
+        </div>
+        <div class="info-row">
+          <span class="label">فروش عمومی:</span>
+          <span id="public-sale-status">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast hidden" id="toast"></div>
+
+  </div><!-- end .container -->
+
+  <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

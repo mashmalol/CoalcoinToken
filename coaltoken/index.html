@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سامانه فروش توکن معدن</title>
+
+<style>
+/* MATRIX BACKGROUND (UNCHANGED) */
+body {
+    margin: 0;
+    overflow: hidden;
+    background: #000;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+}
+
+#digitalRainCanvas {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0;
+}
+
+/* CONTENT BOX */
+.content {
+    position: relative;
+    z-index: 1;
+    background: rgba(0,0,0,0.7);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px #0f0;
+    width: 80%;
+    margin: auto;
+    margin-top: 3%;
+    text-align: center;
+}
+
+/* TITLES */
+h1, h2 {
+    font-family: 'Courier New', monospace;
+    color: #00ff00;
+}
+
+/* FORM */
+.form-group {
+    margin-bottom: 15px;
+    text-align: right;
+}
+
+.form-group label {
+    color: #00ff00;
+    font-weight: bold;
+}
+
+.form-group input[type="number"], .form-group button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    border: none;
+}
+
+button {
+    background: #00ff00;
+    color: #000;
+    font-family: 'Courier New';
+    cursor: pointer;
+}
+button:hover {
+    background: #00cc00;
+}
+
+/* EXPLORE BUTTON */
+.explore-button {
+    margin-top: 30px;
+    background:#ff00ff;
+    border:2px solid white;
+    padding:15px 30px;
+    border-radius:40px;
+    color:white;
+    font-family:'Courier New';
+    cursor:pointer;
+}
+.explore-button:hover { transform: scale(1.1); }
+
+/* MODAL */
+.modal {
+    display:none;
+    position:fixed; top:0; left:0; width:100%; height:100%;
+    background:rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    justify-content:center;
+    align-items:flex-start;
+    padding-top:60px;
+    z-index:10;
+}
+
+.modal-content {
+    background:rgba(0,0,0,0.9);
+    width:80%;
+    max-width:700px;
+    padding:25px;
+    border-radius:10px;
+    border:3px solid #ff00ff;
+    box-shadow:0 0 25px #ff00ff;
+    text-align:center;
+}
+
+.close-button {
+    font-size:30px; color:#aaa; cursor:pointer; float:left;
+}
+.close-button:hover { color:red; }
+
+/* TOKEN CARDS */
+.token-container {
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:20px;
+    margin-top:20px;
+}
+
+.token-card {
+    border:4px solid;
+    border-radius:10px;
+    padding:15px;
+    background:rgba(20,20,20,0.8);
+    font-family:'Courier New';
+}
+
+/* HUE BORDERS */
+.hue1 { border-image:linear-gradient(to right, cyan, magenta) 1; }
+.hue2 { border-image:linear-gradient(to right, yellow, cyan) 1; }
+.hue3 { border-image:linear-gradient(to right, magenta, yellow) 1; }
+.hue4 { border-image:linear-gradient(to right, lime, blue) 1; }
+.hue5 { border-image:linear-gradient(to right, orange, purple) 1; }
+
+.token-card img {
+    width:100%;
+    height:140px;
+    object-fit:cover;
+    border-radius:5px;
+}
+
+.token-card .buy-button {
+    background:#00ff00;
+    border:none;
+    padding:10px;
+    border-radius:5px;
+    font-weight:bold;
+    cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+<canvas id="digitalRainCanvas"></canvas>
+
+<div class="content">
+    <h1>سامانه فروش توکن معدن (MineToken)</h1>
+    <p>خرید مستقیم توکن از معدن + امکان سوزاندن توکن برای دریافت زغال واقعی</p>
+
+    <!-- TOKEN BUY FORM -->
+    <h2>خرید MineToken</h2>
+    <div class="form-group">
+        <label>مقدار توکن موردنظر:</label>
+        <input type="number" id="buyAmount" placeholder="مثال: 100">
+    </div>
+
+    <button id="connectWalletBtn">اتصال کیف پول</button>
+    <button id="buyTokenBtn">خرید توکن</button>
+
+    <!-- CLAIM SECTION -->
+    <h2 style="margin-top:40px;">دریافت زغال با سوزاندن توکن</h2>
+    <p>برای تحویل زغال باید در دفتر معدن توکن خود را بسوزانید.</p>
+
+    <div class="form-group">
+        <label>مقدار توکن برای سوزاندن:</label>
+        <input type="number" id="burnAmount" placeholder="مثال: 50">
+    </div>
+
+    <button id="burnTokenBtn">سوزاندن توکن و ثبت درخواست زغال</button>
+
+    <!-- EXPLORE -->
+    <button class="explore-button" id="exploreBtn">کاوش بسته‌های زغال آماده تحویل</button>
+</div>
+
+
+<!-- MODAL -->
+<div id="exploreModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>بسته‌های زغال موجود</h2>
+        <div id="tokenCards" class="token-container"></div>
+    </div>
+</div>
+
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+/* ─────────────────────────────────────────────
+   CoalCoin - Minecraft Style CSS
+   ───────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* ── Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Root Variables ── */
+:root {
+  --mc-dark:    #1a1a1a;
+  --mc-darker:  #0d0d0d;
+  --mc-panel:   #2d2d2d;
+  --mc-border:  #555555;
+  --mc-gold:    #ffaa00;
+  --mc-green:   #44ff44;
+  --mc-red:     #ff4444;
+  --mc-blue:    #4444ff;
+  --mc-cyan:    #00ffff;
+  --mc-text:    #ffffff;
+  --mc-dim:     #aaaaaa;
+  --pixel:      2px;
+}
+
+/* ── Body ── */
+body {
+  background-color: var(--mc-darker);
+  color: var(--mc-text);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  line-height: 1.8;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Digital Rain Background ── */
+.rain-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.16;
+  background:
+    linear-gradient(180deg, rgba(7, 16, 34, 0.08), rgba(4, 8, 18, 0.92)),
+    url("../assets/gif/digital-rain.gif") center/cover no-repeat;
+  mix-blend-mode: screen;
+  filter: saturate(1.2) contrast(1.1) brightness(0.9);
+}
+
+/* ── Container ── */
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Header ── */
+.mc-header {
+  text-align: center;
+  padding: 24px 16px;
+  background: var(--mc-panel);
+  border: var(--pixel) solid var(--mc-gold);
+  box-shadow:
+    inset var(--pixel) var(--pixel) 0 #ffffff22,
+    0 0 20px #ffaa0033;
+  image-rendering: pixelated;
+}
+
+.mc-logo {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 0 8px var(--mc-gold));
+}
+
+.mc-title {
+  font-size: 20px;
+  color: var(--mc-gold);
+  text-shadow:
+    var(--pixel) var(--pixel) 0 #000,
+    0 0 10px var(--mc-gold);
+  letter-spacing: 2px;
+}
+
+.mc-subtitle {
+  font-size: 8px;
+  color: var(--mc-dim);
+  margin-top: 8px;
+  letter-spacing: 4px;
+}
+
+/* ── Panels ── */
+.mc-panel {
+  background: var(--mc-panel);
+  border: var(--pixel) solid var(--mc-border);
+  padding: 16px;
+  box-shadow:
+    inset var(--pixel) var(--pixel) 0 #ffffff11,
+    inset calc(-1 * var(--pixel)) calc(-1 * var(--pixel)) 0 #00000044;
+  image-rendering: pixelated;
+}
+
+.panel-title {
+  font-size: 11px;
+  color: var(--mc-gold);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: var(--pixel) solid var(--mc-border);
+}
+
+/* ── Buttons ── */
+.mc-btn {
+  display: inline-block;
+  width: 100%;
+  padding: 10px 16px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  cursor: pointer;
+  border: none;
+  image-rendering: pixelated;
+  transition: filter 0.1s, transform 0.1s;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.mc-btn:active {
+  transform: translateY(var(--pixel));
+  filter: brightness(0.85);
+}
+
+.btn-connect {
+  background: #5a7c3a;
+  color: #fff;
+  border: var(--pixel) solid #2d4a1a;
+  box-shadow:
+    inset var(--pixel) var(--pixel) 0 #7db35a,
+    inset calc(-1 * var(--pixel)) calc(-1 * var(--pixel)) 0 #2d4a1a;
+}
+
+.btn-connect:hover { background: #6a9248; }
+
+.btn-refresh {
+  background: #3a5a8c;
+  color: #fff;
+  border: var(--pixel) solid #1a2d5a;
+  box-shadow:
+    inset var(--pixel) var(--pixel) 0 #5a82c8,
+    inset calc(-1 * var(--pixel)) calc(-1 * var(--pixel)) 0 #1a2d5a;
+}
+
+.btn-mint {
+  background: #7c5a3a;
+  color: #fff;
+  border: var(--pixel) solid #4a2d1a;
+  box-shadow:
+    inset var(--pixel) var(--pixel) 0 #b38a5a,
+    inset calc(-1 * var(--pixel)) calc(-1 * var(--pixel)) 0 #4a2d1a;
+}
+
+.btn-mint:hover { background: #9a7248; }
+
+.btn-burn {
+  background: #8c2a2a;
+  color: #fff;
+  border: var(--pixel) solid #5a1a1a;
+  box-shadow:
+    inset var(--pixel) var(--pixel) 0 #c85a5a,
+    inset calc(-1 * var(--pixel)) calc(-1 * var(--pixel)) 0 #5a1a1a;
+}
+
+.btn-burn:hover { background: #aa3333; }
+
+.btn-transfer {
+  background: #2a5a8c;
+  color: #fff;
+  border: var(--pixel) solid #1a3a5a;
+  box-shadow:
+    inset var(--pixel) var(--pixel) 0 #5a8abc;
+}
+
+.btn-transfer:hover { background: #3366a8; }
+
+/* ── Inputs ── */
+.mc-input {
+  display: block;
+  width: 100%;
+  padding: 9px 12px;
+  margin-top: 8px;
+  background: var(--mc-darker);
+  border: var(--pixel) solid var(--mc-border);
+  color: var(--mc-text);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  outline: none;
+  box-shadow: inset var(--pixel) var(--pixel) 0 #00000066;
+  direction: ltr;
+}
+
+.mc-input:focus {
+  border-color: var(--mc-gold);
+  box-shadow:
+    inset var(--pixel) var(--pixel) 0 #00000066,
+    0 0 6px var(--mc-gold);
+}
+
+.mc-input::placeholder { color: var(--mc-border); }
+
+/* ── Balance Display ── */
+.balance-display {
+  text-align: center;
+  padding: 16px;
+  background: var(--mc-darker);
+  border: var(--pixel) solid var(--mc-border);
+  margin-bottom: 10px;
+}
+
+.balance-display span:first-child {
+  font-size: 28px;
+  color: var(--mc-gold);
+  text-shadow: 0 0 10px var(--mc-gold);
+}
+
+.token-symbol {
+  font-size: 12px;
+  color: var(--mc-dim);
+  margin-right: 8px;
+}
+
+.balance-eth {
+  font-size: 9px;
+  color: var(--mc-dim);
+  margin-bottom: 8px;
+}
+
+/* ── Wallet Info ── */
+.wallet-info {
+  margin-top: 10px;
+  font-size: 8px;
+  word-break: break-all;
+  direction: ltr;
+}
+
+.mono {
+  font-family: monospace;
+  color: var(--mc-cyan);
+}
+
+/* ── Info Grid ── */
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 8px;
+  background: var(--mc-darker);
+  border: var(--pixel) solid var(--mc-border);
+  font-size: 9px;
+}
+
+.label { color: var(--mc-dim); }
+.value { color: var(--mc-cyan); }
+
+/* ── Mint Box ── */
+.mint-box {
+  background: var(--mc-darker);
+  border: var(--pixel) solid var(--mc-border);
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.mint-box h3 {
+  font-size: 9px;
+  color: var(--mc-cyan);
+  margin-bottom: 8px;
+}
+
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--mc-panel);
+  border: var(--pixel) solid var(--mc-gold);
+  padding: 10px 20px;
+  font-size: 9px;
+  z-index: 999;
+  text-align: center;
+  max-width: 90%;
+  box-shadow: 0 0 12px var(--mc-gold);
+  animation: fadeInUp 0.3s ease;
+}
+
+.toast.error  { border-color: var(--mc-red);   box-shadow: 0 0 12px var(--mc-red); }
+.toast.success{ border-color: var(--mc-green);  box-shadow: 0 0 12px var(--mc-green); }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ── Hidden ── */
+.hidden { display: none !important; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--mc-darker); }
+::-webkit-scrollbar-thumb { background: var(--mc-border); }
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .mc-title    { font-size: 14px; }
+  .mc-btn      { font-size: 8px; padding: 8px; }
+  .mc-input    { font-size: 8px; }
+}
